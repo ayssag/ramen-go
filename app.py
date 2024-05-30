@@ -2,6 +2,8 @@ from flask import Flask, request, jsonify
 from flask_cors import CORS, cross_origin
 from pymongo import MongoClient
 from os import environ
+import json
+import requests
 
 DB_URL = environ.get('DB_URL')
 API_KEY = environ.get('API_KEY')
@@ -45,6 +47,34 @@ def get_proteins():
         return jsonify(proteinList)
     except:
         print('Fail to get proteins.')
+
+@app.route("/order", methods=['POST'])
+@cross_origin()
+def make_order():
+    try:
+        rawData = request.data.decode('utf-8')
+        data = json.loads(rawData)
+
+        brothId = data.get('brothId')
+        proteinId = data.get('proteinId')
+        broth = db.broth.find_one({"id": brothId})
+        protein = db.protein.find_one({"id": proteinId})
+        brothName = broth['name']
+        proteinName = protein['name']
+        getOrderId = requests.post(
+            "https://api.tech.redventures.com.br/orders/generate-id",
+            headers={"x-api-key": API_KEY}
+        )
+        orderId = json.loads(getOrderId.content)
+        order = {
+            "id": orderId["orderId"],
+            "description": f'{brothName} and {proteinName} Ramen',
+            "image": f"https://tech.redventures.com.br/icons/ramen/ramen{proteinName}.png"
+        }
+        return jsonify(order) 
+    
+    except Exception as e:
+        return f'Error {e}: Can\'t make a post request.'
 
 @app.route("/")
 @cross_origin()
