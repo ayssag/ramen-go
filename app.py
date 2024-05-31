@@ -7,6 +7,7 @@ import requests
 
 DB_URL = environ.get('DB_URL')
 API_KEY = environ.get('API_KEY')
+API_URL = environ.get('API_URL')
 
 app =  Flask('Ramen Go!')
 CORS(app)
@@ -31,9 +32,9 @@ def get_broths():
             del broth['_id']
             brothList.append(broth)
         
-        return jsonify(brothList)
-    except:
-        print('Fail to list broths.')
+        return jsonify(brothList), 200
+    except Exception as e:
+        print(f'{e}: Fail to list broths.')
 
 @app.route("/proteins", methods=['GET'])
 @cross_origin()
@@ -44,9 +45,9 @@ def get_proteins():
             del protein['_id']
             proteinList.append(protein)
         
-        return jsonify(proteinList)
-    except:
-        print('Fail to get proteins.')
+        return jsonify(proteinList), 200
+    except Exception as e:
+        print(f'{e}: Fail to get proteins.')
 
 @app.route("/order", methods=['POST'])
 @cross_origin()
@@ -57,24 +58,35 @@ def make_order():
 
         brothId = data.get('brothId')
         proteinId = data.get('proteinId')
+        
         broth = db.broth.find_one({"id": brothId})
         protein = db.protein.find_one({"id": proteinId})
+        
         brothName = broth['name']
         proteinName = protein['name']
+        
+        requestData = {
+            "url": API_URL,
+            "x-api-key": API_KEY
+        }
+        if not requestData['x-api-key']:
+            return 'x-api-key header missing', 403
+        
         getOrderId = requests.post(
-            "https://api.tech.redventures.com.br/orders/generate-id",
-            headers={"x-api-key": API_KEY}
-        )
+            url=requestData['url'],
+            headers={'x-api-key': requestData['x-api-key']}
+        )   
+        
         orderId = json.loads(getOrderId.content)
         order = {
             "id": orderId["orderId"],
             "description": f'{brothName} and {proteinName} Ramen',
             "image": f"https://tech.redventures.com.br/icons/ramen/ramen{proteinName}.png"
         }
-        return jsonify(order) 
+        return jsonify(order), 200
     
     except Exception as e:
-        return f'Error {e}: Can\'t make a post request.'
+        return f'{e}: Can\'t make a post request.'
 
 @app.route("/")
 @cross_origin()
