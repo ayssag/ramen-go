@@ -9,8 +9,8 @@ pip install -r requirements.txt
 
 ## Execução
 1. Criar um arquivo '.env' com as constantes:
-- DB_URL = <db-url>
-- API_KEY = <api-key>
+- DB_URL = db-url
+- API_KEY = api-key
 - API_URL = "https://api.tech.redventures.com.br/orders/generate-id"
 
 2. Subir o código do backend
