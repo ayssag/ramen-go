@@ -94,5 +94,5 @@ def home():
     return '<h1>Ramen Go!</h1>'
     
 if __name__ == '__main__':
-    app.run()
     st.write('app is running!')
+    app.run()
