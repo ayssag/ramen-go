@@ -3,7 +3,7 @@ from flask_cors import CORS, cross_origin
 from pymongo import MongoClient
 from os import environ
 import json
-import requests
+import streamlit as st
 
 DB_URL = environ.get('DB_URL')
 API_KEY = environ.get('API_KEY')
@@ -95,3 +95,4 @@ def home():
     
 if __name__ == '__main__':
     app.run()
+    st.write('app is running!')
