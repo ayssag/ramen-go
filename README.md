@@ -18,6 +18,6 @@ pip install -r requirements.txt
 flask --app app run
 ```
 3. Acessar a url: [RamenGo!](https://tech.redventures.com.br)
-4. Subtituir o campo API url com o endereço do back: provavelmente http://127.0.0.1:5000
+4. Subtituir o campo API url com o endereço do servidor flask
 5. Substituir a API Key com o mesmo valor da variável de ambiente API_KEY
 6. Acessar a aplicação RamenGo!
