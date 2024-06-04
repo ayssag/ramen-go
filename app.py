@@ -95,4 +95,4 @@ def home():
     
 if __name__ == '__main__':
     st.write('app is running!')
-    app.run()
+    app.run(port=8000)
