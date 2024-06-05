@@ -9,7 +9,7 @@ pip install -r requirements.txt
 
 ## Execução
 1. Criar um arquivo '.env' com as constantes:
-- DB_URL = `"mongodb+srv://ramengo:ramengo1234\@ayssag.a971scw.mongodb.net/?retryWrites=true&w=majority&appName=AyssaG"`
+- DB_URL = `"mongodb+srv://ramengo:ramengo1234@ayssag.a971scw.mongodb.net/?retryWrites=true&w=majority&appName=AyssaG"`
 - API_KEY = `"ZtVdh8XQ2U8pWI2gmZ7f796Vh8GllXoN7mr0djNf"`
 - API_URL = `"https://api.tech.redventures.com.br/orders/generate-id"`
 
